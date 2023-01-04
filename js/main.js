@@ -11,6 +11,7 @@ async function getBuscarLivrosDaApi() {
 }
 
 function exibirOsLivrosNaTela(listaDeLivros) {
+  elementoParaInserirLivros.innerHTML = ''
   listaDeLivros.forEach(livro => {
     elementoParaInserirLivros.innerHTML += `
       <div class="livro">
@@ -34,4 +35,14 @@ function aplicarDesconto(livros) {
     return {...livro, preco: livro.preco - (livro.preco * desconto)}
   })
   return livrosComDescontos
+}
+
+const botoes = document.querySelectorAll('.btn')
+botoes.forEach(btn => btn.addEventListener("click", filtrarLivros))
+
+function filtrarLivros() {
+  const elementoBtn = document.getElementById(this.id)
+  const categoria = elementoBtn.value
+  let livrosFiltrados = livros.filter(livro => livro.categoria == categoria)
+  exibirOsLivrosNaTela(livrosFiltrados)
 }
