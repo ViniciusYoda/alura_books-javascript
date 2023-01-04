@@ -13,9 +13,10 @@ async function getBuscarLivrosDaApi() {
 function exibirOsLivrosNaTela(listaDeLivros) {
   elementoParaInserirLivros.innerHTML = ''
   listaDeLivros.forEach(livro => {
+    let disponibilidade = livro.quantidade > 0 ? 'livro__imagens' : 'livro__imagens indisponivel'
     elementoParaInserirLivros.innerHTML += `
       <div class="livro">
-      <img class="livro__imagens" src="${livro.imagem}" alt="${livro.alt}" />
+      <img class="${disponibilidade}" src="${livro.imagem}" alt="${livro.alt}" />
       <h2 class="livro__titulo">
         ${livro.titulo}
       </h2>
@@ -43,6 +44,15 @@ botoes.forEach(btn => btn.addEventListener("click", filtrarLivros))
 function filtrarLivros() {
   const elementoBtn = document.getElementById(this.id)
   const categoria = elementoBtn.value
-  let livrosFiltrados = livros.filter(livro => livro.categoria == categoria)
+  let livrosFiltrados = categoria == 'disponivel' ? livros.filter(livro => livro.quantidade > 0) : livros.filter(livro => livro.categoria == categoria)
   exibirOsLivrosNaTela(livrosFiltrados)
 }
+
+let btnOrdenarPorPreco = document.getElementById('btnOrdenarPorPreco')
+btnOrdenarPorPreco.addEventListener("click", ordenarLivrosPorPreco);
+
+function ordenarLivrosPorPreco() {
+  let livrosOrdenados = livros.sort((a, b) => a.preco - b.preco)
+  exibirOsLivrosNaTela(livrosOrdenados)
+}
+
